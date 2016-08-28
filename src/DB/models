@@ -1,0 +1,36 @@
+-- | Un lugar identifica a unas coordenads con nombre, piso donde se encuentra y
+-- si es válido o no.
+Lugar json
+    nombre Text maxlen=50
+    piso Text
+    valido Bool
+    coordenada CoordenadaId
+    tipo Tipo
+    deriving Show Eq
+
+-- | Un reporte tiene alguien que lo envía, una causa y el lugar al que se
+-- refiere
+Reporte json
+    reporter Text
+    causa Text
+    lugar LugarId
+
+-- | Coordenadas geográficas de un lugar. Podríamos usar postgis pero pocos
+-- hosts lo soportan
+Coordenada json
+    latitud Double
+    longitud Double
+    deriving Show Eq
+
+-- | Un nodo de un grafo en el cual podemos buscar caminos
+Nodo
+    nombre Text maxlen=50
+    coordenada CoordenadaId Eq
+    deriving Show
+
+-- | Esto es una arísta del grafo en el cual buscamos los caminos. Dado que es
+-- un grafo no dirigido técnicamente no es desde-hacia.
+NodoConexiones
+    nodoUno NodoId
+    nodoDos NodoId
+
