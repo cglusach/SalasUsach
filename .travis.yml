@@ -1,5 +1,4 @@
 language: c
-sudo: false
 dist: trusty
 
 cache:
@@ -9,6 +8,8 @@ cache:
     - $HOME/.stack
 
 before_install:
+  - sudo apt-get -q update
+  - sudo apt-get -y install libgmp-dev
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
