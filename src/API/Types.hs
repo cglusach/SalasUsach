@@ -26,6 +26,7 @@ import Data.Aeson.TH
 import DB.Models
 import Servant
 import Servant.Docs
+import Config
 
 
 -- | Petición de búsqueda del nombre de un lugar
@@ -47,7 +48,8 @@ $(deriveJSON defaultOptions ''Camino)
 
 -- | Posibles errores a retornar
 data ErrorRespuesta =
-    SecretIncorrecto -- ^ El secreto dado es incorrecto
+      SecretIncorrecto -- ^ El secreto dado es incorrecto
+  | LugarNoExiste      -- ^ El lugar no existe en la DB
     deriving (Show, Read)
 
 $(deriveJSON defaultOptions ''ErrorRespuesta)
@@ -57,6 +59,8 @@ $(deriveJSON defaultOptions ''ErrorRespuesta)
 newtype Respuesta a = Respuesta (Either ErrorRespuesta a)
     deriving (FromJSON, ToJSON, Show, Read)
 
+returnRespuesta :: App a -> App (Respuesta a)
+returnRespuesta m = m >>= \x -> return . Respuesta . Right $ x
 
 
 --------------------------------------------------------------------------------

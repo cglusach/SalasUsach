@@ -27,13 +27,16 @@ import Servant
 import Config
 import API.Common
 import Servant.Docs
+import qualified DB.Consultas as DB
+import Database.Persist
+import Control.Monad (liftM, void)
 
 type WithSecret = Capture "secret" Secret 
 
 
 type SalasUSACHAPI =
-         "lugar" :> "buscar" :> ReqBody '[JSON] LugarNombreQuery :>  Get '[JSON] (Respuesta [Lugar])
-    :<|> "lugar" :> "agregar" :> ReqBody '[JSON] Lugar :> WithSecret :> Post '[JSON] (Respuesta LugarId)
+         "lugar" :> "buscar" :> ReqBody '[JSON] LugarNombreQuery :>  Get '[JSON] (Respuesta [(Entity Lugar, Entity Coordenada)])
+    :<|> "lugar" :> "agregar" :> ReqBody '[JSON] Lugar :> ReqBody '[JSON] Coordenada :> WithSecret :> Post '[JSON] (Respuesta LugarId)
     :<|> "lugar" :> "actualizar" :> ReqBody '[JSON] Lugar :> Capture "lugar-id" LugarId :> WithSecret :> Put '[JSON] (Respuesta Lugar)
     :<|> "lugar" :> "caminos" :> Capture "lugar-id" LugarId :> Get '[JSON] (Respuesta Camino)
     :<|> "lugar" :> "reportar" :> ReqBody '[JSON] Reporte :> WithSecret :> Post '[JSON] (Respuesta ReporteId)
@@ -64,14 +67,29 @@ apiServer =
 --------------------------------------------------------------------------------
 
 
-buscarLugar :: LugarNombreQuery -> App (Respuesta [Lugar])
-buscarLugar = undefined
+buscarLugar :: LugarNombreQuery -> App (Respuesta [(Entity Lugar, Entity Coordenada)])
+buscarLugar lugar = returnRespuesta . runDB $ DB.buscarLugar lugar
 
-agregarLugar :: Lugar -> Secret -> App (Respuesta LugarId)
-agregarLugar _ = withSecret $ undefined
+
+-- | Agrega un nuevo lugar al sistema. Dado que no sabemos si está correcto o
+-- no, debemos guardarlo inidcando que no está validado el lugar.
+agregarLugar :: Lugar -> Coordenada -> Secret -> App (Respuesta LugarId)
+agregarLugar lugar coordenada = withSecret $ do
+    runDB $ do
+        coordenadaId <- insert coordenada
+        let lugar' = lugar { lugarValido = False, lugarCoordenada =  coordenadaId}
+        liftM (Respuesta . Right) $ insert lugar'
+
 
 actualizarLugar :: Lugar -> LugarId -> Secret -> App (Respuesta Lugar)
-actualizarLugar _ _ = withSecret $ undefined
+actualizarLugar lugar lugarId = withSecret . runDB $ do
+    -- Verificamos primero si el lugar existe
+    existe <- get lugarId
+    case existe of
+      Nothing -> return . Respuesta $ Left LugarNoExiste
+      Just _ -> do
+          void $ replace lugarId lugar
+          return . Respuesta $ Right lugar
 
 obtenerCaminosLugar :: LugarId -> App (Respuesta Camino)
 obtenerCaminosLugar = undefined

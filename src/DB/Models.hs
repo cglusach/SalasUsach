@@ -31,9 +31,10 @@ import Control.Monad.Reader
 import Database.Persist.Sql
 import Database.Persist.TH
 import Database.Persist.Quasi
-import Data.Text
+import Data.Text (Text)
 import DB.Types
 import Servant.Docs
+import Data.Proxy
 
 import Config
 
@@ -70,7 +71,16 @@ instance ToSample Lugar where
         where
             l = Lugar "517" "1" True (toSqlKey 1) TipoSala
 
+
+instance ToSample Coordenada where
+    toSamples _ = singleSample c
+        where
+            c = Coordenada (-33.212) (-71.3122)
+
+
 instance (ToBackendKey SqlBackend a) => ToSample (Key a) where
-    toSamples _ = [("El id 1", toSqlKey 1), ("El id 2", toSqlKey 2)]
+    toSamples _ = [("El id de la entidad", toSqlKey 1)]
 
 
+instance (ToSample (Key a), PersistEntity a, ToSample a) => ToSample (Entity a) where
+    toSamples _ = map (\((_, i), (s, x)) -> (s, Entity i x)) $ zip (toSamples (Proxy :: Proxy (Key a))) (toSamples (Proxy :: Proxy a)) 
