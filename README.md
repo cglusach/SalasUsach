@@ -19,7 +19,7 @@ tecnologías:
 
 # Requisitos
 
-* Stack
+* [Stack](https://github.com/commercialhaskell/stack)
 * libpq-dev
 
 # Compilación
@@ -88,7 +88,7 @@ propiedad de Felipe Garay con todos los derechos reservados.
 
 Los nuevos datos agregados en esta versión de Salas USACH así como
 modificaciones a los datos originales son de propiedad de las personas listadas
-en MEMBERS quienes se reservan todos los derechos.
+en AUTHORS quienes se reservan todos los derechos.
 
 Queda prohibida toda copia o uso de los datos utilizados en esta aplicación.
 

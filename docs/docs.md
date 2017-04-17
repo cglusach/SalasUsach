@@ -36,7 +36,7 @@ Clients must supply the following data
 - Posible error
 
 ```javascript
-{"Left":[]}
+{"Left":"SecretIncorrecto"}
 ```
 
 - 
@@ -67,7 +67,7 @@ Clients must supply the following data
 - Example: `application/json`
 
 ```javascript
-{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","valido":true}
+{"latitud":-33.212,"longitud":-71.3122}
 ```
 
 #### Response:
@@ -82,19 +82,13 @@ Clients must supply the following data
 - Posible error
 
 ```javascript
-{"Left":[]}
+{"Left":"SecretIncorrecto"}
 ```
 
-- El id 1
+- El id de la entidad
 
 ```javascript
 {"Right":1}
-```
-
-- El id 2
-
-```javascript
-{"Right":2}
 ```
 
 ## GET /lugar/buscar
@@ -130,7 +124,7 @@ Clients must supply the following data
 - Posible error
 
 ```javascript
-{"Left":[]}
+{"Left":"SecretIncorrecto"}
 ```
 
 - 
@@ -142,22 +136,22 @@ Clients must supply the following data
 - 
 
 ```javascript
-{"Right":[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","valido":true}]}
+{"Right":[[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","id":1,"valido":true},{"latitud":-33.212,"id":1,"longitud":-71.3122}]]}
 ```
 
 - 
 
 ```javascript
-{"Right":[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","valido":true},{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","valido":true}]}
+{"Right":[[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","id":1,"valido":true},{"latitud":-33.212,"id":1,"longitud":-71.3122}],[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","id":1,"valido":true},{"latitud":-33.212,"id":1,"longitud":-71.3122}]]}
 ```
 
 - 
 
 ```javascript
-{"Right":[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","valido":true},{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","valido":true},{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","valido":true}]}
+{"Right":[[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","id":1,"valido":true},{"latitud":-33.212,"id":1,"longitud":-71.3122}],[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","id":1,"valido":true},{"latitud":-33.212,"id":1,"longitud":-71.3122}],[{"coordenada":1,"piso":"1","nombre":"517","tipo":"TipoSala","id":1,"valido":true},{"latitud":-33.212,"id":1,"longitud":-71.3122}]]}
 ```
 
-## GET /lugar/caminos/:lugar-id
+## GET /lugar/caminos/:lugar-id/:secret
 
 #### Authentication
 
@@ -169,6 +163,7 @@ Clients must supply the following data
 #### Captures:
 
 - *lugar-id*: El ID del lugar que se quiere modificar
+- *secret*: Un token de acceso para evitar que hagan spam a la API
 
 #### Response:
 
@@ -182,7 +177,7 @@ Clients must supply the following data
 - Posible error
 
 ```javascript
-{"Left":[]}
+{"Left":"SecretIncorrecto"}
 ```
 
 - 
@@ -228,18 +223,36 @@ Clients must supply the following data
 - Posible error
 
 ```javascript
-{"Left":[]}
+{"Left":"SecretIncorrecto"}
 ```
 
-- El id 1
+- El id de la entidad
 
 ```javascript
 {"Right":1}
 ```
 
-- El id 2
+## GET /test
+
+#### Authentication
+
+
+
+Clients must supply the following data
+
+
+#### Response:
+
+- Status code 200
+- Headers: []
+
+- Supported content types are:
+
+    - `application/json`
+
+- Response body as below.
 
 ```javascript
-{"Right":2}
+"text"
 ```
 

@@ -1,0 +1,69 @@
+name: SalasUSACHAPI
+version: '0.1.0.0'
+synopsis: Initial project template from stack
+description: Please see README.md
+category: Web
+author: Felipe Garay
+maintainer: felipe.garay@usach.cl
+copyright: 2016 Felipe Garay
+license: BSD3
+github: githubuser/SalasUSACHAPI
+ghc-options:
+- -Wall
+- -threaded
+- -rtsopts
+- -fno-warn-orphans
+dependencies:
+- base
+library:
+  source-dirs: src
+  ghc-options:
+  - -with-rtsopts=-NT
+  exposed-modules:
+  - Lib
+  - DB.Models
+  - DB.Types
+  - DB.Common
+  - DB.Consultas
+  - Config
+  - API.Types
+  - API.API
+  - API.Common
+  dependencies:
+  - aeson
+  - servant
+  - servant-server
+  - servant-js
+  - servant-docs
+  - wai
+  - warp
+  - mtl
+  - persistent
+  - persistent-template
+  - persistent-postgresql
+  - text
+  - esqueleto
+  - monad-logger
+  - transformers
+  - bytestring
+  - wai-extra
+  - directory
+  - ekg
+  - impure-containers
+  - fgl
+  - AC-Angle 
+executables:
+  SalasUSACHAPI-exe:
+    main: Main.hs
+    source-dirs: app
+    dependencies:
+    - SalasUSACHAPI
+tests:
+  SalasUSACHAPI-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+    - -with-rtsopts=-T
+    dependencies:
+    - SalasUSACHAPI
+    - hspec

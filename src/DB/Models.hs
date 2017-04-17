@@ -1,6 +1,7 @@
 -- SalasUSACH - Aplicación para buscar salas en la Universidad de Santiago
 --
--- Copyright (C) 2016 CGL USACH and Authors
+-- Copyright (C) 2016-2017 CGL USACH and Authors
+-- Copyright (C) 2011-2016 Felipe Garay
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -84,3 +85,12 @@ instance (ToBackendKey SqlBackend a) => ToSample (Key a) where
 
 instance (ToSample (Key a), PersistEntity a, ToSample a) => ToSample (Entity a) where
     toSamples _ = map (\((_, i), (s, x)) -> (s, Entity i x)) $ zip (toSamples (Proxy :: Proxy (Key a))) (toSamples (Proxy :: Proxy a)) 
+
+
+
+instance Distancia Coordenada where
+    coordenadas l = (coordenadaLatitud l, coordenadaLongitud l)
+
+
+instance (Distancia b) => Distancia (a, b) where
+    coordenadas (_, x) = coordenadas x

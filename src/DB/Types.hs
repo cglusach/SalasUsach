@@ -1,6 +1,7 @@
 -- SalasUSACH - Aplicación para buscar salas en la Universidad de Santiago
 --
--- Copyright (C) 2016 CGL USACH and Authors
+-- Copyright (C) 2016-2017 CGL USACH and Authors
+-- Copyright (C) 2011-2016 Felipe Garay
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -31,3 +32,24 @@ data Tipo = TipoSala    -- ^ El lugar es una sala
 
 $(derivePersistField "Tipo")
 $(deriveJSON defaultOptions ''Tipo)
+
+
+data NombreMetro = 
+     MetroUSACH
+   | EstacionCentral
+
+data Metro = Metro
+    { nombre        :: !NombreMetro
+    , metroLatitud  :: !Double
+    , metroLongitud :: !Double
+    }
+
+
+
+class Distancia a where
+    coordenadas :: a -> (Double, Double)
+
+
+instance Distancia Metro where
+    coordenadas (Metro _ lat lng) = (lat, lng)
+

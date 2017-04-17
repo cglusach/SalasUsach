@@ -91,8 +91,8 @@ startApp = do
     pool <- makePool pgHost pgPort pgUser pgPasswd pgDBName pgConnNumber
     let cfg = Config pool secret
         logger = logStdout
-        {-logger = logStdoutDev-}
     _ <- forkServer "localhost" 8000
+    putStrLn $ "Starting server on " ++ show port
     run port $ logger $ salasUSACHApp cfg
 
 

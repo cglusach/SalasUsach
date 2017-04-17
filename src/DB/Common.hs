@@ -1,6 +1,7 @@
 -- SalasUSACH - Aplicación para buscar salas en la Universidad de Santiago
 --
--- Copyright (C) 2016 CGL USACH and Authors
+-- Copyright (C) 2016-2017 CGL USACH and Authors
+-- Copyright (C) 2011-2016 Felipe Garay
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by

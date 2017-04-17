@@ -1,6 +1,7 @@
 -- SalasUSACH - Aplicación para buscar salas en la Universidad de Santiago
 --
--- Copyright (C) 2016 CGL USACH and Authors
+-- Copyright (C) 2016-2017 CGL USACH and Authors
+-- Copyright (C) 2011-2016 Felipe Garay
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -25,6 +26,8 @@ import DB.Common
 import Prelude hiding ((||))
 import Database.Esqueleto
 import Data.Text (Text)
+import Data.Graph.Types
+import Data.Graph.Mutable
 
 -- | Busca un lugar con el nombre exacto o por nombres parecidos. Retorna una
 -- lista de máximo 6 elementos con nombres parecidos junto con la coordenada
@@ -51,3 +54,7 @@ buscarLugar (LugarNombreQuery busqueda) =
         likeStr = val "%" || val busqueda || val "%"
 
         orderQuery l = levenshtein (lower . unaccent $ l ^. LugarNombre, lower . unaccent $ likeStr)
+
+obtenerCaminos :: SqlPersistT IO ()
+obtenerCaminos = do
+    undefined
